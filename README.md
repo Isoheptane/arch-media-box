@@ -1,4 +1,4 @@
-# Arch Linux 盒装安装介质
+# Arch Linux 盒装安装媒介
 这是一个由 [Debian 小药盒](https://github.com/moesoha/debian-media-box) 启发的 Arch Linux 盒装安装介质的平面设计。
 
 ![Install Medium](preview.jpeg)
