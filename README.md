@@ -13,7 +13,7 @@
 
 在这里，由于 InkScape 无法使用 CMYK 色彩模式，因此需要先导入 RGB 色彩模式的 PDF 文件，然后再导入到 Scribus 中转换为 CMYK 色彩模式。
 
-原始的 InkScape SVG 文件中文本并没有转换为路径，因此需要安装字体。该项目使用的字体
+原始的 InkScape SVG 文件中文本并没有转换为路径，因此需要系统上安装有对应的字体。该项目使用的字体有：
 - Noto Sans
 - Noto Sans CJK SC
 - Montserrat
