@@ -3,6 +3,8 @@
 
 ![Install Medium](render.jpg)
 
+![Install Instruction](Instruction.png)
+
 尽管 Arch Linux 的 Logo 与某药品并无太多相似之处，但既然已经存在了 Debian 盒装安装介质的梗，那整一个 Arch Linux 盒装安装介质似乎也没问题吧。
 
 ## 使用
