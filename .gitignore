@@ -1,6 +1,6 @@
 *.pdf
 *.tif
-*.png
+
 !.readme/*
 
 # Created by https://www.toptal.com/developers/gitignore/api/latex
