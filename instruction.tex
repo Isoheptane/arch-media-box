@@ -1,0 +1,409 @@
+% TODO: 目前内容不足以凑满两页（正反 A4 纸），所以有些内容注释掉了，之后完善
+
+\documentclass{article}
+\setlength\parindent{0pt}
+\pagenumbering{gobble}
+
+\usepackage{geometry}
+\geometry{papersize={210mm,297mm}}
+\geometry{left=9mm,right=9mm,top=9mm,bottom=9mm}
+
+\usepackage{fontspec}
+\setmainfont{DejaVu Sans}[Scale=0.9]
+
+\usepackage{xeCJK}
+\CJKfamily{zhsong}
+
+\usepackage[svgcolors]{xcolor}
+\usepackage{longfbox}
+\usepackage{epstopdf}
+\usepackage{float}
+\usepackage{xpatch}
+\usepackage{tipa}
+\usepackage[export]{adjustbox}
+\usepackage{enumitem}
+\usepackage{mdframed}
+
+\usepackage{multirow}
+\usepackage{tabularx}
+\renewcommand\tabularxcolumn[1]{m{#1}} % for vertical centering text in X column
+
+\usepackage{multicol}
+\usepackage[most]{tcolorbox}
+\usepackage{amssymb}
+\setlength{\columnsep}{3mm}
+
+\usepackage[explicit,compact]{titlesec}
+\titleformat{\section}{\normalfont\bfseries}{}{0pt}{【#1】}
+
+% 啊！万能的 StackExchange！
+% https://tex.stackexchange.com/questions/475466/latex-three-column-layout-merging-two-of-them-at-the-begining
+%
+\newlength{\abstractwidth}
+\newlength{\columnshrink}
+\newsavebox{\twocolinsert}
+%
+\makeatletter
+\newlength{\resized@col}
+\newcounter{column@count}
+%
+\xpatchcmd{\multi@column@out}{
+	\process@cols\mult@gfirstbox{%
+		\setbox\count@
+		\vsplit\@cclv to\dimen@
+		\set@keptmarks
+		\setbox\count@
+		\vbox to\dimen@
+		{\unvbox\count@ \ifshr@nking\vfilmaxdepth\fi}%
+	}%
+}{
+	\process@cols\mult@gfirstbox{%
+		\global\advance\c@column@count\@ne
+		\resized@col\dimen@%
+		\ifnum\c@column@count=\tw@
+				\advance\resized@col-\columnshrink
+		\fi%
+		\setbox\count@
+		\vsplit\@cclv to\resized@col
+		\set@keptmarks
+		\setbox\count@
+		\vbox to\dimen@{
+			\ifnum
+				\c@column@count=\tw@ \vspace*{\columnshrink}
+			\fi
+			\unvbox\count@
+			\ifshr@nking\vfilmaxdepth\fi
+		}%
+	}%
+}{\typeout{Success}}{\typeout{Failure}}
+\makeatother
+
+% for designing header
+\newsavebox\mysavebox
+\newenvironment{imgminipage}[2][]{%
+   \def\imgcmd{\includegraphics[width=\wd\mysavebox, height=\dimexpr\ht\mysavebox+\dp\mysavebox\relax, #1]{#2}}%
+   \begin{lrbox}{\mysavebox}%
+   \begin{minipage}%
+}{%
+   \end{minipage}
+   \end{lrbox}%
+   \sbox\mysavebox{\setlength{\fboxrule}{0pt}\fbox{\usebox\mysavebox}}%
+   \mbox{\rlap{\raisebox{-\dp\mysavebox}{\imgcmd}}\usebox\mysavebox}%
+}
+
+\renewcommand{\labelitemi}{$\blacktriangleright$}
+
+\tcbset{
+    frame code={}
+    center title,
+    left=0pt,
+    right=0pt,
+    top=6pt,
+    bottom=0pt,
+    colback=gray!40,
+    colframe=white,
+    enlarge left by=0mm,
+    boxsep=0pt,
+    arc=0pt,outer arc=0pt,
+}
+
+\begin{document}
+\begin{multicols*}{3}
+
+	\setlength{\abstractwidth}{2\linewidth}
+	\addtolength{\abstractwidth}{\columnsep}
+	\savebox{\twocolinsert}{
+	\begin{minipage}{\abstractwidth}
+		\noindent 核准日期：2023年07月13日
+		\newline 修改日期：2019年07月06日，2020年10月31日，2021年07月04日，
+		\newline 2021年08月14日，2023年06月10日，2023年07月13日
+		\newline
+
+		% \begin{mdframed}[leftline=false, rightline=false, innertopmargin=0pt, innerbottommargin=0pt, innerrightmargin=0pt, innerleftmargin=2em]
+		% 	\includegraphics[width=0.15\abstractwidth, valign=m]{assets/debian-text.eps}
+		% 	\hfill
+		% 	\begin{imgminipage}{assets/header-background.eps}[t]{0.7\abstractwidth}
+		% 		\Large \textbf{盒装安装媒介说明书}
+
+		% 		\normalsize 请仔细阅读说明书并在管理员指导下使用
+		% 	\end{imgminipage}
+		% \end{mdframed}
+
+		\includegraphics[width=\abstractwidth]{assets/header.eps}
+
+
+		\begin{mdframed}[hidealllines=true, innerbottommargin=.5em, innertopmargin=0pt]
+			\sffamily
+
+			{\centering 警示语 \par}
+
+			无论是否与其它操作系统合用，安装 Arch Linux 均存在丢失磁盘上所有内容的风险。（参见【不良反应】）
+
+            本说明中的信息和意见无意构成法律建议，法律建议可通过咨询律师来获得。
+
+			一些硬件制造商拒绝告诉我们如何给他们的硬件编写驱动程序。另一些则要求签署不公开的契约才能接触相关文档，以阻止我们以自由软件形式发布驱动程序源代码。由于我们未被授权使用这些文档，因此它们无法在 Linux 下工作。
+		\end{mdframed}
+	\end{minipage}}
+	\setlength{\columnshrink}{\ht\twocolinsert}
+	\addtolength{\columnshrink}{\dp\twocolinsert}
+	\noindent\usebox{\twocolinsert}
+
+
+	\begin{tcolorbox}
+	\section*{发行版名称}
+	\end{tcolorbox}
+	\begin{tabularx}{\linewidth}{@{}ll@{}}
+		通用名称： & Arch Linux \\
+		正式名称： & Arch Linux \\
+		英文音标： & \textipa{[a:t\textesh\ l\textsci n\textschwa ks]} \\
+	\end{tabularx}
+
+	\medskip
+
+
+	\begin{tcolorbox}
+	\section*{内容}
+	\end{tcolorbox}
+
+	通用 x86-64 GNU/Linux 发行版基本系统，采用滚动升级模式，尽全力提供最新的稳定版软件，由 Arch Linux 社区开发者对其进行打包、开发与维护。
+
+	% 内核版本：6.4.1
+
+	% 没有版本号。
+
+	\medskip
+
+
+	\begin{tcolorbox}
+	\section*{性质}
+	\end{tcolorbox}
+
+	本系统为采用 GNU/Linux 内核的操作系统，安装后可由 UEFI 或 Legacy 引导方式启动。
+
+	\medskip
+
+
+	\begin{tcolorbox}
+	\section*{适应平台}
+	\end{tcolorbox}
+
+	\begin{itemize}
+		\item 仅支持使用 x86-64 (AMD64) 架构的计算机、服务器和嵌入式设备。
+		\item 本包装盒中的安装媒介适用于何平台以实际为准。
+	\end{itemize}
+
+
+	\begin{tcolorbox}
+	\section*{规格}
+	\end{tcolorbox}
+
+	1 枚 安装媒介
+
+	\medskip
+
+	\begin{tcolorbox}
+	\section*{用法}
+	\end{tcolorbox}
+
+	使用 USB 设备引导。
+
+	启动方式根据硬件调整，一般使用 UEFI。
+
+	根据硬件性能和个人需要，调整安装方式：一般而言，使用命令行页面进行手动安装；否则使用 Arch Linux installer 脚本安装。
+
+	安装好基本系统并设置完成软件包后，即可酌情选择桌面环境和桌面管理器。
+
+	\medskip	
+
+	\begin{tcolorbox}
+	\section*{不良反应}
+	\end{tcolorbox}
+
+	Arch Linux 有一个对用户和开发者所提交的软件缺陷报告进行归档管理的缺陷跟踪系统，每个软件缺陷报告都被授予一个编号并且被长期跟踪，直到它被标记为已修复。
+
+	可以在 https://bugs.archlinux.org/ 处得到详细信息。
+
+	\medskip
+
+
+	\begin{tcolorbox}
+	\section*{注意事项}
+	\end{tcolorbox}
+	\begin{itemize}[leftmargin=*]
+
+		\item 满足最低的硬件要求
+
+		下表是内存和硬盘的需求。
+
+		{\small\begin{tabularx}{\linewidth}{|X|X|X|X|}
+			\hline
+			类别 & RAM\newline (最低) & RAM\newline (推荐) & 硬盘 \\
+			\hline
+			无桌面 & 512MB & 1GB & 2GB \\
+			\hline
+			有桌面 & 1GB & 2GB & 10GB \\
+			\hline
+		\end{tabularx}}
+
+		基于您的需求，也许可以使用低于上表所列的配置完成系统安装。但是多数用户在无视这些建议的情况下会安装失败。
+
+		\item 需要固件的设备
+
+		除了需要设备驱动程序，有些硬件还要在使用之前加载固件（firmware）或微码（microcode）。
+
+	\end{itemize}
+
+
+	\begin{tcolorbox}
+	\section*{禁忌}
+	\end{tcolorbox}
+
+	在操作过程中出现或即将出现下列任何一种情况，请立即停止操作，并准备好系统恢复。
+
+	\begin{itemize}[leftmargin=*]
+		\setlength{\itemsep}{0pt}
+		\setlength{\parskip}{0pt}
+		\setlength{\parsep}{0pt}
+
+		\item 以根权限在根目录下执行递归删除
+		\item 未确认设备名即使用 dd 命令
+		\item 未确认设备名即执行格式化
+		\item 未确认操作即使用命令重定向
+		\item 未经确认即执行来自网络的脚本
+		\item 长期在散热不良的设备上高负载使用
+	\end{itemize}
+
+    % 注释部分就不管了
+
+	% \begin{tcolorbox}
+	% \section*{无障碍安装}
+	% \end{tcolorbox}
+
+	% Debian GNU/Linux 安装介质不用于视力或运动障碍人士。
+
+	% \medskip
+
+	% \begin{tcolorbox}
+	% \section*{新手安装}
+	% \end{tcolorbox}
+
+	% Debian GNU/Linux 应谨慎用于新手安装，需要在管理员指导下进行安装，并且需要进行密切的系统监测，一旦出现系统完整度的恶化，应考虑停止使用 Debian GNU/Linux。
+
+	% \medskip
+
+
+	% \begin{tcolorbox}
+	% \section*{版本迭代}
+	% \end{tcolorbox}
+
+
+	\begin{tcolorbox}
+	\section*{系统相互作用}
+	\end{tcolorbox}
+	\begin{itemize}[leftmargin=*]
+		\setlength{\parindent}{0pt}
+
+		\item 与 Windows 的相互作用
+
+		当您有双引导时，若另一个操作系统与 Windows 访问相同的文件系统，这就有可能会导致问题和数据丢失。在这种情况下，文件系统的真实状态可能与 Windows 认为在“启动”之后的情况不同，并且可能在进一步写入文件系统时导致文件系统损坏。因此，在双引导设置中，为了避免文件系统损坏，有必要在 Windows 中禁用“快速启动”功能。
+
+		在罕见情况中已观察到，在使用 Windows 进行系统更新时，可能会出现重新启动后引导被破坏从而导致 Arch Linux 无法启动的情况。同时，若在安装过程中将引导信息写入与 Windows 所在的物理磁盘 MBR 内，将导致后者无法正常启动。
+
+		\item 与其他 Linux 发行版的相互作用
+
+		与 Manjaro 混用时，可能导致 AUR 宕机。
+
+	\end{itemize}
+
+
+	\begin{tcolorbox}
+	\section*{贮藏}
+	\end{tcolorbox}
+
+	-40℃\textasciitilde +70℃
+
+	妥善贮藏所有安装媒介，勿使非安装人员触及。
+
+	\medskip
+
+
+	\begin{tcolorbox}
+	\section*{包装}
+	\end{tcolorbox}
+
+	刻录有 Arch Linux 安装映像的、兼容 USB 3.0/2.0 协议的闪存驱动器。
+
+	1 枚/盒
+
+	\medskip
+
+
+	\begin{tcolorbox}
+	\section*{有效期}
+	\end{tcolorbox}
+
+	Arch Linux 使用滚动升级模式，只需执行一条命令，便可升级系统到最新版本。基于上述原因，对 Arch Linux 的支持长期有效。
+
+	\medskip
+
+
+	\begin{tcolorbox}
+	\section*{执行标准}
+	\end{tcolorbox}
+	\begin{tabularx}{\linewidth}{@{}ll@{}}
+		\multirow{4}{*}{}{开源许可证：} & GNU GPL（主要）\\
+		~ & GNU LGPL \\
+		~ & BSD \\
+		~ & 以及其他授权条款 \\
+	\end{tabularx}
+
+	\medskip
+
+
+	\begin{tcolorbox}
+	\section*{批准文号}
+	\end{tcolorbox}
+
+	说明书使用 CC-BY-SA 3.0 协议授权。
+
+	\medskip
+
+
+% 	\begin{tcolorbox}
+% 	\section*{生产单位}
+% 	\end{tcolorbox}
+%
+% 	Debian 计划
+%
+% 	\medskip
+
+
+	\begin{tcolorbox}
+	\section*{说明书}
+	\end{tcolorbox}
+	\begin{tabularx}{\linewidth}{@{}ll@{}}
+		\multirow{2}{*}{}{编审：} & @YukariChiba\\
+		~ & @moesoha \\
+        ~ & @Tibrella \\
+		图形: & @YJBeetle\\
+        ~ & @Isoheptane \\
+		GitHub: & isoheptane/arch-media-box\\
+	\end{tabularx}
+
+	\medskip
+
+
+	\vfill
+	\begin{flushright}
+		Arch Linux\linebreak 20230713
+		\linebreak
+		\newline
+		\begin{minipage}{0,5\textwidth}
+			\centering
+			$\vcenter{\hbox{\includegraphics[height=10mm]{assets/archlinux-logo-with-text.eps}}}$
+		\end{minipage}
+	\end{flushright}
+
+\end{multicols*}
+\end{document}
+

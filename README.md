@@ -3,10 +3,14 @@
 
 ![Install Medium](render.jpg)
 
+![Install Instruction](instruction.png)
+
 尽管 Arch Linux 的 Logo 与某药品并无太多相似之处，但既然已经存在了 Debian 盒装安装介质的梗，那整一个 Arch Linux 盒装安装介质似乎也没问题吧。
 
 ## 使用
 下载 `box_cmyk.pdf` 文件后打印即可。
+
+`Instruction.tex` 需要使用 `xelatex` 编译，或者直接去 action 下载。
 
 ## 源文件
 `box_source.svg` 为**原始的 InkScape SVG 文件**，`box.svg` 为**全部转换为路径后的 InkScape SVG 文件**。
@@ -18,6 +22,10 @@
 - Noto Sans CJK SC
 - Montserrat
 - Inconsolata
+
+相应的，编译 `Instruction` 需要以下字体：
+- DejaVu Sans
+
 
 ## 许可
 本作品采用 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) 许可协议进行许可。 
